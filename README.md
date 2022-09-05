@@ -176,9 +176,9 @@ fmt.Printf(“fone after %v”, time.Since(start))
 
 Примеры вызовов:
 
-```
-go-telnet --timeout=10s host port go-telnet mysite.ru 8080 go-telnet --timeout=3s 1.1.1.1 123
-```
+* `go-telnet --timeout=10s host port`
+* `go-telnet mysite.ru 8080`
+* `go-telnet --timeout=3s 1.1.1.1 123`
  
 Требования:
 * Программа должна подключаться к указанному хосту (ip или доменное имя + порт) по протоколу TCP. После подключения STDIN программы должен записываться в сокет, а данные полученные и сокета должны выводиться в STDOUT
