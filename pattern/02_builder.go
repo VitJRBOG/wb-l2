@@ -12,28 +12,17 @@ import "fmt"
 func ExecuteBuilderExample() {
 	aDirector := Director{}
 
-	masterBuilder := GetBuilder("cottage")
-	if masterBuilder == nil {
-		panic(fmt.Errorf("can't build the 'cottage'"))
-	}
+	cottageBuilder := NewCottage()
 
-	aDirector.SetBuilder(masterBuilder)
+	aDirector.SetBuilder(cottageBuilder)
 	house := aDirector.BuildTheHouse()
 	fmt.Println(house)
 
-	masterBuilder = GetBuilder("townhouse")
-	if masterBuilder == nil {
-		panic(fmt.Errorf("can't build the 'townhouse'"))
-	}
+	townhouseBuilder := NewTownHouse()
 
-	aDirector.SetBuilder(masterBuilder)
+	aDirector.SetBuilder(townhouseBuilder)
 	house = aDirector.BuildTheHouse()
 	fmt.Println(house)
-
-	masterBuilder = GetBuilder("hut")
-	if masterBuilder == nil {
-		panic(fmt.Errorf("can't build the 'hut'"))
-	}
 }
 
 type Director struct {
@@ -45,33 +34,22 @@ func (d *Director) SetBuilder(b Builder) {
 }
 
 func (d *Director) BuildTheHouse() *House {
-	d.MasterBuilder.SetFloorType()
-	d.MasterBuilder.SetFloorNumbers()
-	d.MasterBuilder.SetWallsType()
-	d.MasterBuilder.SetWindowsType()
-	d.MasterBuilder.SetRoofType()
+	d.MasterBuilder.setFloorType()
+	d.MasterBuilder.setFloorNumbers()
+	d.MasterBuilder.setWallsType()
+	d.MasterBuilder.setWindowsType()
+	d.MasterBuilder.setRoofType()
 
-	return d.MasterBuilder.GetHouse()
+	return d.MasterBuilder.getHouse()
 }
 
 type Builder interface {
-	GetHouse() *House
-	SetFloorType()
-	SetFloorNumbers()
-	SetWallsType()
-	SetWindowsType()
-	SetRoofType()
-}
-
-func GetBuilder(buildingType string) Builder {
-	switch buildingType {
-	case "cottage":
-		return NewCottage()
-	case "townhouse":
-		return NewTownHouse()
-	default:
-		return nil
-	}
+	getHouse() *House
+	setFloorType()
+	setFloorNumbers()
+	setWallsType()
+	setWindowsType()
+	setRoofType()
 }
 
 type House struct {
@@ -83,95 +61,95 @@ type House struct {
 }
 
 type Cottage struct {
-	FloorType    string
-	FloorNumbers int
-	WallsType    string
-	WindowsType  string
-	RoofType     string
+	floorType    string
+	floorNumbers int
+	wallsType    string
+	windowsType  string
+	roofType     string
 }
 
 func NewCottage() *Cottage {
 	return &Cottage{}
 }
 
-func (c *Cottage) GetHouse() *House {
+func (c *Cottage) getHouse() *House {
 	return &House{
-		FloorType:    c.FloorType,
-		FloorNumbers: c.FloorNumbers,
-		WallsType:    c.WallsType,
-		WindowsType:  c.WindowsType,
-		RoofType:     c.RoofType,
+		FloorType:    c.floorType,
+		FloorNumbers: c.floorNumbers,
+		WallsType:    c.wallsType,
+		WindowsType:  c.windowsType,
+		RoofType:     c.roofType,
 	}
 }
 
-func (c *Cottage) SetFloorType() {
-	c.FloorType = "wood"
-	fmt.Printf("Floor type will be: %s\n", c.FloorType)
+func (c *Cottage) setFloorType() {
+	c.floorType = "wood"
+	fmt.Printf("Floor type will be: %s\n", c.floorType)
 }
 
-func (c *Cottage) SetFloorNumbers() {
-	c.FloorNumbers = 1
-	fmt.Printf("Floor numbers will be: %d\n", c.FloorNumbers)
+func (c *Cottage) setFloorNumbers() {
+	c.floorNumbers = 1
+	fmt.Printf("Floor numbers will be: %d\n", c.floorNumbers)
 }
 
-func (c *Cottage) SetWallsType() {
-	c.WallsType = "brick"
-	fmt.Printf("Walls type will be: %s\n", c.WallsType)
+func (c *Cottage) setWallsType() {
+	c.wallsType = "brick"
+	fmt.Printf("Walls type will be: %s\n", c.wallsType)
 }
 
-func (c *Cottage) SetWindowsType() {
-	c.WindowsType = "oval"
-	fmt.Printf("Windows type will be: %s\n", c.WindowsType)
+func (c *Cottage) setWindowsType() {
+	c.windowsType = "oval"
+	fmt.Printf("Windows type will be: %s\n", c.windowsType)
 }
 
-func (c *Cottage) SetRoofType() {
-	c.RoofType = "gambrel"
-	fmt.Printf("Roof type will be: %s\n", c.RoofType)
+func (c *Cottage) setRoofType() {
+	c.roofType = "gambrel"
+	fmt.Printf("Roof type will be: %s\n", c.roofType)
 }
 
 type TownHouse struct {
-	FloorType    string
-	FloorNumbers int
-	WallsType    string
-	WindowsType  string
-	RoofType     string
+	floorType    string
+	floorNumbers int
+	wallsType    string
+	windowsType  string
+	roofType     string
 }
 
 func NewTownHouse() *TownHouse {
 	return &TownHouse{}
 }
 
-func (t *TownHouse) GetHouse() *House {
+func (t *TownHouse) getHouse() *House {
 	return &House{
-		FloorType:    t.FloorType,
-		FloorNumbers: t.FloorNumbers,
-		WallsType:    t.WallsType,
-		WindowsType:  t.WindowsType,
-		RoofType:     t.RoofType,
+		FloorType:    t.floorType,
+		FloorNumbers: t.floorNumbers,
+		WallsType:    t.wallsType,
+		WindowsType:  t.windowsType,
+		RoofType:     t.roofType,
 	}
 }
 
-func (t *TownHouse) SetFloorType() {
-	t.FloorType = "concrete"
-	fmt.Printf("Floor type will be: %s\n", t.FloorType)
+func (t *TownHouse) setFloorType() {
+	t.floorType = "concrete"
+	fmt.Printf("Floor type will be: %s\n", t.floorType)
 }
 
-func (t *TownHouse) SetFloorNumbers() {
-	t.FloorNumbers = 3
-	fmt.Printf("Floor numbers will be: %d\n", t.FloorNumbers)
+func (t *TownHouse) setFloorNumbers() {
+	t.floorNumbers = 3
+	fmt.Printf("Floor numbers will be: %d\n", t.floorNumbers)
 }
 
-func (t *TownHouse) SetWallsType() {
-	t.WallsType = "drywall"
-	fmt.Printf("Walls type will be: %s\n", t.WallsType)
+func (t *TownHouse) setWallsType() {
+	t.wallsType = "drywall"
+	fmt.Printf("Walls type will be: %s\n", t.wallsType)
 }
 
-func (t *TownHouse) SetWindowsType() {
-	t.WindowsType = "rectangle"
-	fmt.Printf("Windows type will be: %s\n", t.WindowsType)
+func (t *TownHouse) setWindowsType() {
+	t.windowsType = "rectangle"
+	fmt.Printf("Windows type will be: %s\n", t.windowsType)
 }
 
-func (t *TownHouse) SetRoofType() {
-	t.RoofType = "gable"
-	fmt.Printf("Roof type will be: %s\n", t.RoofType)
+func (t *TownHouse) setRoofType() {
+	t.roofType = "gable"
+	fmt.Printf("Roof type will be: %s\n", t.roofType)
 }
