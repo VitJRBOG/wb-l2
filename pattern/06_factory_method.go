@@ -10,101 +10,70 @@ import "fmt"
 */
 
 func ExecuteFactoryMethodExample() {
-	ar := GetGun("assault_rifle")
-	if ar != nil {
-		fmt.Printf("This assault rifle is an '%s'\n", ar.GetName())
-	} else {
-		panic(fmt.Errorf("unknown gun: %s", "assault_rifle"))
-	}
+	f := Fabric{}
 
-	sr := GetGun("sniper_rifle")
-	if sr != nil {
-		fmt.Printf("This sniper rifle is an '%s'\n", sr.GetName())
-	} else {
-		panic(fmt.Errorf("unknown gun: %s", "sniper_rifle"))
-	}
+	sizes := []string{"small", "medium", "big"}
 
-	mg := GetGun("machine_gun")
-	if mg != nil {
-		fmt.Printf("This machine gun is an '%s'\n", mg.GetName())
-	} else {
-		panic(fmt.Errorf("unknown gun: %s", "machine_gun"))
-	}
-
-	rl := GetGun("rocket_launcher")
-	if rl != nil {
-		fmt.Printf("This rocket launcher is an '%s'\n", rl.GetName())
-	} else {
-		panic(fmt.Errorf("unknown gun: %s", "rocket_launcher"))
+	for _, gunSize := range sizes {
+		g := f.GetGun(gunSize)
+		if g == nil {
+			panic("unknown gun size")
+		}
+		g.Shoot()
 	}
 }
 
-func GetGun(gunType string) Armorer {
-	switch gunType {
-	case "assault_rifle":
-		return NewAssaultRifle()
-	case "sniper_rifle":
-		return NewSniperRifle()
-	case "machine_gun":
-		return NewMachineGun()
+type Fabric struct{}
+
+func (f *Fabric) GetGun(gunSize string) Gun {
+	switch gunSize {
+	case "small":
+		return newPistol()
+	case "medium":
+		return newMachinegun()
+	case "big":
+		return newRocketlauncher()
 	default:
 		return nil
 	}
 }
 
-type Armorer interface {
-	SetName(name string)
-	GetName() string
+type Gun interface {
+	Shoot()
 }
 
-type Gun struct {
-	name string
+type pistol struct {
+	sound string
 }
 
-func (g *Gun) SetName(name string) {
-	g.name = name
+func newPistol() *pistol {
+	return &pistol{"piy-piy"}
 }
 
-func (g *Gun) GetName() string {
-	return g.name
+func (p *pistol) Shoot() {
+	fmt.Printf("Pistol does %s\n", p.sound)
 }
 
-type AssaultRifle struct {
-	Gun
+type machinegun struct {
+	sound string
 }
 
-func NewAssaultRifle() *AssaultRifle {
-	return &AssaultRifle{
-		Gun: Gun{
-			name: "M4",
-		},
-	}
+func newMachinegun() *machinegun {
+	return &machinegun{"ratata"}
 }
 
-//
-
-type SniperRifle struct {
-	Gun
+func (m *machinegun) Shoot() {
+	fmt.Printf("Machinegun does %s\n", m.sound)
 }
 
-func NewSniperRifle() *SniperRifle {
-	return &SniperRifle{
-		Gun: Gun{
-			name: "PGM Hecate II",
-		},
-	}
+type rocketlauncher struct {
+	sound string
 }
 
-//
-
-type MachineGun struct {
-	Gun
+func newRocketlauncher() *rocketlauncher {
+	return &rocketlauncher{"kaboom"}
 }
 
-func NewMachineGun() *MachineGun {
-	return &MachineGun{
-		Gun: Gun{
-			name: "RPK",
-		},
-	}
+func (r *rocketlauncher) Shoot() {
+	fmt.Printf("Rocketlauncher does %s\n", r.sound)
 }
