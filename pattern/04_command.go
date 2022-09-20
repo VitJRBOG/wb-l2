@@ -10,71 +10,63 @@ import "fmt"
 */
 
 func ExecuteCommandExample() {
-	computer := Computer{}
+	onCmd := &OnCommand{}
+	offCmd := &OffCommand{}
 
-	onCommand := OnCommand{
-		device: &computer,
-	}
+	onBtn := &OnButton{onCmd}
+	offBtn := &OffButton{offCmd}
 
-	offCommand := OffCommand{
-		device: &computer,
-	}
+	computer := Computer{onBtn: onBtn, offBtn: offBtn}
 
-	onButton := Button{
-		command: &onCommand,
-	}
-
-	offButton := Button{
-		command: &offCommand,
-	}
-
-	onButton.Press()
-	offButton.Press()
-}
-
-type Button struct {
-	command Command
-}
-
-func (b *Button) Press() {
-	b.command.Execute()
-}
-
-type Command interface {
-	Execute()
-}
-
-type OnCommand struct {
-	device Device
-}
-
-func (c *OnCommand) Execute() {
-	c.device.On()
-}
-
-type OffCommand struct {
-	device Device
-}
-
-func (c *OffCommand) Execute() {
-	c.device.Off()
-}
-
-type Device interface {
-	On()
-	Off()
+	computer.On()
+	computer.Off()
 }
 
 type Computer struct {
-	status string
+	onBtn  Button
+	offBtn Button
 }
 
 func (c *Computer) On() {
-	c.status = "on"
-	fmt.Println("Computer is turned on now")
+	c.onBtn.Press()
 }
 
 func (c *Computer) Off() {
-	c.status = "off"
-	fmt.Println("Computer is turned off now")
+	c.offBtn.Press()
+}
+
+type Button interface {
+	Press()
+}
+
+type OnButton struct {
+	onCommand Command
+}
+
+func (b *OnButton) Press() {
+	b.onCommand.Exec()
+}
+
+type OffButton struct {
+	offCommand Command
+}
+
+func (b *OffButton) Press() {
+	b.offCommand.Exec()
+}
+
+type Command interface {
+	Exec()
+}
+
+type OnCommand struct{}
+
+func (c *OnCommand) Exec() {
+	fmt.Println("Turning on")
+}
+
+type OffCommand struct{}
+
+func (c *OffCommand) Exec() {
+	fmt.Println("Turning off")
 }
